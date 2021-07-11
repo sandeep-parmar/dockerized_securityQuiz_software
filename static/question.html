@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Netbackup Security</title>
+
+  <!-- Custom fonts for this theme -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+  <!-- Theme CSS -->
+  <link href="../css/freelancer.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- jquery ui -->
+   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <!--<script src="js/Basic.js"></script>-->
+    <script>
+        $(document).ready(function() {
+            var host = "http://10.210.148.238:";
+            var port = "5000";
+            var webservice = "/";
+            var loginservice = "/login";
+            var bookservice = "/books";
+            var bookAdservice = "/bookAd";
+            var STATUS = "status";
+            var ERRMSG = "errmsg";
+
+            $('#question').val(1);
+            function handleSuccess(data, status) {
+                var res = jQuery.parseJSON(data);
+
+                if (res[STATUS] == 0) {
+                    var question=res["question"];
+                    var opt1=res["option1"];
+                    var opt2=res["option2"];
+                    var opt3=res["option3"];
+                    var opt4=res["option4"];
+                    var ans=res["ans"];
+                    $('#question').text(question);
+                    $('#question').val(ans);
+                    $('#option1').text(opt1);
+                    $('#option2').text(opt2);
+                    $('#option3').text(opt3);
+                    $('#option4').text(opt4);
+                    console.log("set value for new question:"+$('#option1').text());
+                    $('#qna input:radio').prop('checked', false);
+                    $('#qna label').css('background-color', '');
+                    $("#next").attr("disabled", false);
+                }
+                else if(res[STATUS]==1){
+                    var result = res["result"];
+                    var user = res["user"];
+                    window.location.href = "logout.html?user="+user+"&result="+result;
+                }
+            }
+                function handleFail(data, status) {
+                    alert("In fail callback status:" + status);
+                }
+
+                function doAjaxGet(params) {
+                    console.log("called doAjaxget");
+                    var url = params['url'];
+                    var data = params['data'];
+                    console.log("url:" + url);
+                    console.log("data:" + data);
+                    var successCallback = params['successCallbackFunction'];
+                    var failureCallback = params['failureCallbackFunction'];
+                    jQuery.ajax({
+                        type: 'get',
+                        url: url,
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        crossDomain: true,
+                        success: successCallback,
+                        error: failureCallback
+                    });
+                }
+
+                function doAjaxPost(params) {
+                    console.log("called doAjaxPost");
+                    var url = params['url'];
+                    var data = params['data'];
+                    var successCallback = params['successCallbackFunction'];
+                    var failureCallback = params['failureCallbackFunction'];
+                    console.log("ss url:" + url);
+                    console.log("ss data:" + data);
+                    jQuery.ajax({
+                        url: params['url'],
+                        type: 'post',
+                        //headers: {"Authentication": "Bearer " + localStorage.getItem("token") , "x-auth": localStorage.getItem("x-auth")},
+                        data: params['data'],
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                         xhrFields: {
+                            withCredentials: true
+                        },
+                        crossDomain: true,
+                        success: successCallback,
+                        error: failureCallback
+                    });
+                }
+
+                $("#next").click(function () {
+                    var actual = $('#question').val();
+                    var selected = $('#qna input:radio:checked').val();
+                    if (selected == null || selected == '') {
+                        alert("Please select atleast one option");
+                        return;
+                    }
+                    $("#next").attr("disabled", true);
+                    if(selected != actual)
+                    {
+                        //alert("sss paused for 2 second");
+                        $("#option"+selected).css("background-color",'#F47B61');
+                        $("#option"+actual).css("background-color",'#9FE184');
+                    }
+                    else
+                    {
+                        $("#option"+selected).css("background-color",'#9FE184');
+                    }
+
+                    var data = JSON.stringify({
+                        "Actual": actual,
+                        "Selected":selected
+                    });
+
+                    var params = {};
+                    params['url'] = host + port + webservice + "getnext";
+                    params['data'] = data;
+                    params['successCallbackFunction'] = handleSuccess;
+                    params['failureCallbackFunction'] = handleFail;
+                    doAjaxPost(params);
+                });
+        });
+	</script>
+</head>
+
+<body>
+<nav class="navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="index.html">NETBACKUP SECURITY</a>
+</nav>
+
+<div class="container" style="margin-top: 50px">
+    <form method="post" id="qna" name="qna" action="">
+        <table class="table">
+            <tbody>
+                <tr id="trq">
+                    <h1 id="question" name="question" value="1">What is SSL</h1>
+                </tr>
+                <tr id="trop1">
+                    <div class="form-check alignTOP">
+                    <input class="form-check-input" type="radio" value="1" name="radiobutton" id="rd1">
+                    <label class="form-check-label decor alignRIGHT" name="option1" id="option1" for="rd1">
+                    Secure socket layer
+                    </label>
+                    </div>
+                </tr>
+                <tr id="trop2">
+                    <div class="form-check alignTOP">
+                    <input class="form-check-input" type="radio" value="2" name="radiobutton" id="rd2">
+                    <label class="form-check-label decor alignRIGHT" name="option2" id="option2" for="rd2">
+                    simple secure layer
+                    </label>
+                    </div>
+                </tr>
+                <tr id="trop3">
+                    <div class="form-check alignTOP">
+                    <input class="form-check-input" type="radio" value="3" name="radiobutton" id="rd3">
+                    <label class="form-check-label decor alignRIGHT" name="option3" id="option3" for="rd3">
+                    secure simple layer
+                    </label>
+                    </div>
+                </tr>
+                <tr id="trop4">
+                    <div class="form-check alignTOP">
+                    <input class="form-check-input" type="radio" value="4" name="radiobutton" id="rd4">
+                    <label class="form-check-label decor alignRIGHT" name="option4" id="option4" for="rd4">
+                    none of the above
+                    </label>
+                    </div>
+                </tr>
+            </tbody>
+        </table>
+
+       <button type="button" class="btn btn-primary alignTOP bsize" id="next" name="next">Submit</button>
+    </form>
+</div>
+
+</body>
+
+</html>

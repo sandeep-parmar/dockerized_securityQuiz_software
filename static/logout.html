@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Netbackup Security</title>
+
+  <!-- Custom fonts for this theme -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+  <!-- Theme CSS -->
+  <link href="../css/freelancer.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- jquery ui -->
+   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <!--<script src="js/Basic.js"></script>-->
+    <script>
+        $(document).ready(function() {
+            function GetURLParameter(sParam)
+            {
+                var sPageURL = window.location.search.substring(1);
+                var sURLVariables = sPageURL.split('&');
+                for (var i = 0; i < sURLVariables.length; i++)
+                {
+                    var sParameterName = sURLVariables[i].split('=');
+                    if (sParameterName[0] == sParam)
+                    {
+                        return decodeURIComponent(sParameterName[1]);
+                    }
+                }
+            }
+
+             $("#home").click(function () {
+                window.location.href = "index.html";
+             });
+
+            var user = GetURLParameter('user');
+            var result = GetURLParameter('result');
+            $('#uname').text(user);
+            $('#result').text(result);
+        });
+	</script>
+</head>
+
+<body>
+<nav class="navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="index.html">NETBACKUP SECURITY</a>
+</nav>
+
+<div class="container" style="margin-top: 30px">
+    <div class="form-check">
+        <h1 id="result_H" name="result_H" value="1">Hello <label id="uname" name="uname"></label> </h1>
+        <h2>Your score is: <label class="form-check-label" name="result" id="result"></label>/6</h2>
+     </div>
+    <div class="form-check">
+       <button type="button" class="btn btn-primary alignTOP bsize" id="home" name="home">RESTART</button>
+        <!--<button type="button" class="btn btn-primary alignTOP bsize" id="next" name="next">Submit</button>-->
+    </div>
+</div>
+
+</body>
+
+</html>
