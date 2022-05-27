@@ -17,8 +17,8 @@ app.secret_key = "netbackup"
 mysql = MySQL()
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'Gyp.s8m'
-app.config['MYSQL_DATABASE_DB'] = 'netbackup'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'R00t123'
+app.config['MYSQL_DATABASE_DB'] = 'quiz'
 app.config['MYSQL_DATABASE_HOST'] = 'mysql'
 mysql.init_app(app)
 
