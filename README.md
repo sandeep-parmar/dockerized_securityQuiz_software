@@ -35,8 +35,8 @@ services:
         - ./db:/docker-entrypoint-initdb.d/:ro  #initialize the mysql schema from the sql file we have
         - todo-mysql-data:/var/lib/mysql
       environment:
-         MYSQL_DATABASE: netbackup              # this is the database we want to create
-         MYSQL_ROOT_PASSWORD: Gyp.s8m           # this the password we want to create for the user root of the mysql
+         MYSQL_DATABASE: quiz              # this is the database we want to create
+         MYSQL_ROOT_PASSWORD: R00t123           # this the password we want to create for the user root of the mysql
    web:                                         #https://www.programials.com/docker-run-static-website
     image: nginx                                # use nginx as the base image
     volumes:
